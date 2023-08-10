@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+    button {
+      padding: 8px 20px;
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Join the Chat</h2>
+    <p>Enter your username and click "Join" to enter the chat room.</p>
+    <div>
+      <input type="text" id="username" placeholder="Enter your username">
+      <br><br>
+      <button onclick="handleJoin()" id="joinButton">Join</button>
+    </div>
+    <div id = 'result' style = "color: red; margin-top: 10px;font-weight: bold;"></div>
+  </div>
+  
+  <!-- <script src="/socket.io/socket.io.js"></script> -->
+  <script>
+    function handleJoin(){
+      const user = document.getElementById('username').value
+      if(user.trimStart()==''){
+         document.getElementById('result').innerText = 'Empty user! '
+         return;
+      }
+      const port = window.location.port
+      const host = window.location.hostname;
+      const options = {
+        method : "POST",
+        headers : {
+          'Content-type' : 'application/json'
+        },
+        body : JSON.stringify({user})
+      }
+      // fetch(`http://${host}:${port}/userExists`,options)
+      // .then(resp=>resp.json())
+      // .then(data=>{
+      //   if(data.err)
+      //       document.getElementById('result').innerText = data.err
+      //     else{
+      //       localStorage.setItem('user',user)
+      //       window.location.href = `http://${host}:${port}/user`
+
+      //     }
+      // })
+
+       localStorage.setItem('user',user)
+            window.location.href = `/user`
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

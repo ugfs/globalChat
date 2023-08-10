@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    .chat-container {
+      width: 80%;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .message {
+      background-color: #e1e1e1;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      
+    }
+    .rec-msg{
+      background-color: #007bff;
+      width: auto;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px; 
+      color: white;
+
+
+    }
+    .input-container {
+      display: flex;
+      margin-top: 20px;
+    }
+    .message-input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+    .send-button {
+      padding: 8px 20px;
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    #header{
+      font-weight: bold;
+    }
+  </style>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="message">Hello! <span id = 'header'></span> Welcome to the chat.</div>
+    <div class="message">Feel free to start chatting.</div>
+    <!-- More messages can be added here -->
+
+    <div class="input-container">
+      <input type="text" class="message-input" placeholder="Type your message...">
+      <button class="send-button" id = 'btn'>Send</button>
+    </div>
+  </div>
+  <script>
+  const user = localStorage.getItem('user')
+  document.getElementById('header').innerText = `${user}`
+      document.addEventListener('keydown', (event) => {
+      if (event.keyCode === 13) { // Enter key
+        ; // Trigger the button's click event
+        const sndBtn = document.getElementById('btn')
+        sndBtn.click();
+      }
+    });
+  </script>
+  <script>
+    const socket = io();
+    socket.on('connect',()=>{
+      console.log('connected..')
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message','animate__animated','animate__bounceIn');
+        messageDiv.textContent = `connected..`;
+        document.querySelector('.chat-container').appendChild(messageDiv);
+    })
+
+    socket.on('send-msg',(data)=>{
+      console.log('got msg')
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('rec-msg','animate__animated','animate__bounceIn');
+        messageDiv.textContent = `${data.user} => ${data.messageText}`;
+        document.querySelector('.chat-container').appendChild(messageDiv);
+    })
+
+    const messageInput = document.querySelector('.message-input');
+
+    const sendButton = document.querySelector('.send-button');
+    const displayMsg = ()=>{
+      const messageText = messageInput.value;
+      if (messageText.trim() !== '') {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.textContent = `${user} => \n${messageText}`;
+        document.querySelector('.chat-container').appendChild(messageDiv);
+        messageInput.value = '';
+        socket.emit('send-msg',{user,messageText})
+      }
+      
+    }
+
+    sendButton.addEventListener('click', displayMsg);
+  </script>
+
+
+</body>
+</html>
