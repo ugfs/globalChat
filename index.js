@@ -7,11 +7,13 @@ const bodyParser = require('body-parser')
 const socketManage = require('./controllers/socketManage.js')
 
 const app = express()
+
 const server = http.createServer(app)
 const io = socket(server)
 
 io.on('connection',socketManage)
 // app.use(bodyParser.json())
+app.use(express.static('assets'))
 
 
 app.get('/',(req,res)=>{
