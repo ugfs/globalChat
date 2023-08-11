@@ -115,7 +115,7 @@
       const messageText = messageInput.value;
       if (messageText.trim() !== '') {
         const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message');
+        messageDiv.classList.add('message','animate__animated','animate__bounceIn');
         messageDiv.textContent = `${user} => \n${messageText}`;
         document.querySelector('.chat-container').appendChild(messageDiv);
         messageInput.value = '';
