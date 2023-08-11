@@ -136,7 +136,9 @@
       for(let i = 0 ; i<data.length ; i++){
          console.log(data)
          const messageDiv = document.createElement('div');
-        messageDiv.classList.add('rec-msg','animate__animated','animate__bounceIn');
+         if(data[i].user === user) messageDiv.classList.add('message')
+          else messageDiv.classList.add('rec-msg')
+        messageDiv.classList.add('animate__animated','animate__bounceIn');
         messageDiv.textContent = `${data[i].user} => ${data[i].messageText}`;
         parent.appendChild(messageDiv);
       }
