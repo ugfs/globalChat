@@ -131,12 +131,13 @@
 
 
     // fetching the chats
+    function fetching(){
     fetch('/fetchChats')
     .then(data=>data.json())
     .then(data=>{
       const parent = document.querySelector('.chat-container');
       for(let i = 0 ; i<data.length ; i++){
-         console.log(data)
+  
          const messageDiv = document.createElement('div');
          if(data[i].user === user) messageDiv.classList.add('message')
           else messageDiv.classList.add('rec-msg')
@@ -146,6 +147,8 @@
       }
 
     })
+  }
+  fetching();
   </script>
 
 
