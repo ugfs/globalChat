@@ -3,16 +3,20 @@ const cors = require('cors')
 const socket = require('socket.io')
 const http = require('http')
 const path = require('path')
-const bodyParser = require('body-parser')
-const socketManage = require('./controllers/socketManage.js')
 
 const app = express()
 
 const server = http.createServer(app)
 const io = socket(server)
+const chatBackup = [];
 
-io.on('connection',socketManage)
-// app.use(bodyParser.json())
+io.on('connection',(socket)=>{
+	socket.on('send-msg',(data)=>{
+		chatBackup.push(data)
+		socket.broadcast.emit('send-msg',data)
+	})
+})
+
 app.use(express.static('assets'))
 
 
@@ -22,6 +26,10 @@ app.get('/',(req,res)=>{
 
 app.get('/user',(req,res)=>{
 	res.sendFile(path.join(__dirname,'/pages/user.html'))
+})
+
+app.get('/fetchChats',(req,res)=>{
+	res.json(chatBackup)
 })
 
 

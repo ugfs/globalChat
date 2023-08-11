@@ -125,6 +125,23 @@
     }
 
     sendButton.addEventListener('click', displayMsg);
+
+
+
+    // fetching the chats
+    fetch('/fetchChats')
+    .then(data=>data.json())
+    .then(data=>{
+      const parent = document.querySelector('.chat-container');
+      for(let i = 0 ; i<data.length ; i++){
+         console.log(data)
+         const messageDiv = document.createElement('div');
+        messageDiv.classList.add('rec-msg','animate__animated','animate__bounceIn');
+        messageDiv.textContent = `${data[i].user} => ${data[i].messageText}`;
+        parent.appendChild(messageDiv);
+      }
+
+    })
   </script>
 
 
