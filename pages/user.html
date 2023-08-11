@@ -93,9 +93,11 @@
   <script>
     const socket = io();
     socket.on('connect',()=>{
-      console.log('connected..')
+      //console.log('connected..')
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message','animate__animated','animate__bounceIn');
+        messageDiv.style.backgroundColor = '#00b894'
+        messageDiv.style.color = 'white'
         messageDiv.textContent = `connected..`;
         document.querySelector('.chat-container').appendChild(messageDiv);
     })
